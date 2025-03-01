@@ -3,8 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger"; 
-
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,10 +13,19 @@ interface HowItWorksItem {
 }
 
 const howItWorks: HowItWorksItem[] = [
-  { step: "Step 1", description: "Create an account." },
-  { step: "Step 2", description: "Set your availability." },
-  { step: "Step 3", description: "Share your link." },
-  { step: "Step 4", description: "Schedule meetings." },
+  { step: "Sign Up", description: "Create your free Calendra account." },
+  {
+    step: "Set Availability",
+    description: "Define when you're available for meetings.",
+  },
+  {
+    step: "Share Your Link",
+    description: "Send your scheduling link to clients or colleagues.",
+  },
+  {
+    step: "Get Booked",
+    description: "Receive confirmations for new appointments automatically.",
+  },
 ];
 
 const HowItWorksSection: React.FC = () => {
