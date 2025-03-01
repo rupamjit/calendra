@@ -59,19 +59,22 @@ const HowItWorksSection: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className="grid">
+      <div className="flex justify-center items-center p-3">
+        <h1 className="text-3xl font-extrabold">How It Works</h1>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-5">
         {howItWorks.map((item, index) => (
           <Card
             ref={(el) => setCardRef(el, index)}
             key={index}
-            className="w-full"
+            className="w-full bg-blue-100"
           >
-            <CardHeader>
+            <CardHeader className="font-bold ">
               <CardTitle>{item.step}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="font-bold">{item.description}</p>
+              <p>{item.description}</p>
             </CardContent>
           </Card>
         ))}
