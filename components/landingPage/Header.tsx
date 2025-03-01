@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { SquarePen, AlignJustify } from "lucide-react";
+import Link from "next/link";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,13 +33,22 @@ const Header: React.FC = () => {
           isMenuOpen ? "flex" : "hidden"
         } sm:flex flex-col sm:flex-row justify-center sm:justify-between gap-3 sm:gap-5 w-full sm:w-auto mt-4 sm:mt-0`}
       >
-        <Button className="cursor-pointer flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2">
-          <SquarePen className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span>Create Event</span>
-        </Button>
-        <Button className="cursor-pointer text-sm sm:text-base px-3 sm:px-4 py-2">
-          Login
-        </Button>
+        <Link href="/events">
+          <Button className="cursor-pointer flex items-center gap-2 text-xs sm:text-sm md:text-base px-2 sm:px-3 md:px-4 py-1 sm:py-2 w-full sm:w-auto justify-center sm:justify-start">
+            <SquarePen className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="block">Create Event</span>
+          </Button>
+        </Link>
+        <SignedOut>
+          <SignInButton forceRedirectUrl="/dashboard">
+            <Button className="cursor-pointer text-sm sm:text-base px-3 sm:px-4 py-2">
+              Login
+            </Button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
       </div>
     </div>
   );

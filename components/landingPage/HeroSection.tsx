@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { gsap } from "gsap";
+import { SignInButton } from "@clerk/nextjs";
 
 const HeroSection: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -39,7 +40,6 @@ const HeroSection: React.FC = () => {
     );
   }, []);
 
-
   return (
     <div className="flex flex-col md:flex-row justify-between items-center bg-amber-300 p-3 md:p-6">
       <div className="w-full md:w-1/2 p-4 md:p-5 text-center md:text-left">
@@ -59,12 +59,14 @@ const HeroSection: React.FC = () => {
           meet users.
         </p>
         <div className="flex justify-center md:justify-start m-2 px-2 md:px-5">
-          <Button
-            ref={buttonRef}
-            className="cursor-pointer text-sm sm:text-base px-4 py-2"
-          >
-            Get Started
-          </Button>
+          <SignInButton forceRedirectUrl="/dashboard">
+            <Button
+              ref={buttonRef}
+              className="cursor-pointer text-sm sm:text-base px-4 py-2"
+            >
+              Get Started
+            </Button>
+          </SignInButton>
         </div>
       </div>
 
