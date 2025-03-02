@@ -8,7 +8,7 @@ import { FormData } from "@/Types";
 export const createEvent = async (data: FormData) => {
   try {
     const { userId } = await auth();
-
+    console.log(userId);
     if (!userId) {
       throw new Error("Unauthorized User");
     }
@@ -25,9 +25,19 @@ export const createEvent = async (data: FormData) => {
 
     const validatedData = eventSchema.safeParse(data);
 
+    if (!validatedData.success) {
+      throw new Error("Validation failed");
+    }
+    const { title, description, duration, isPrivate } = validatedData.data;
+    console.log(title);
     const event = await prisma.event.create({
-      ...validatedData,
-      userId: user.id,
+      data: {
+        title,
+        description,
+        duration,
+        isPrivate,
+        userId: user.id,
+      },
     });
 
     return event;

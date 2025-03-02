@@ -13,19 +13,35 @@ import {
 } from "@/components/ui/select";
 import { eventSchema } from "@/Schema";
 import { FormData } from "@/Types";
+import { createEvent } from "@/actions/event";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const EventForm = ({ onSubmitForm, initialData = {} }) => {
+const EventForm = ({ setIsOpen }) => {
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(eventSchema) });
-  const onsubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+
+  const onsubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      // console.log(data);
+      setLoading(true);
+      await createEvent(data);
+      setLoading(false);
+      if (searchParams.get("create") === "true") {
+        router.replace(window?.location.pathname);
+      }
+      setIsOpen(false);
+    } catch (error) {
+      console.log(`Error in creating Event ${error}`);
+    }
   };
+
   return (
     <form
       onSubmit={handleSubmit(onsubmit)}
@@ -39,7 +55,12 @@ const EventForm = ({ onSubmitForm, initialData = {} }) => {
           Event Title
         </label>
 
-        <Input placeholder="Enter Your Title of Event" id="title" {...register("title")} className="mt-1" />
+        <Input
+          placeholder="Enter Your Title of Event"
+          id="title"
+          {...register("title")}
+          className="mt-1"
+        />
 
         {errors.title && (
           <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>
@@ -76,7 +97,7 @@ const EventForm = ({ onSubmitForm, initialData = {} }) => {
         </label>
 
         <Input
-        placeholder="Enter duration in minutes"
+          placeholder="Enter duration in minutes"
           id="duration"
           {...register("duration", {
             valueAsNumber: true,
@@ -116,10 +137,10 @@ const EventForm = ({ onSubmitForm, initialData = {} }) => {
           )}
         />
       </div>
-
-      {errors.isPrivate && <p className="text-red-500 text-xs mt-1">{errors.isPrivate.message}</p>}
-
-      <Button type="submit" disabled={loading}>
+      {errors.isPrivate && (
+        <p className="text-red-500 text-xs mt-1">{errors.isPrivate.message}</p>
+      )}
+      <Button className="cursor-pointer" type="submit" disabled={loading}>
         {loading ? "Submitting..." : "Create Event"}
       </Button>
     </form>

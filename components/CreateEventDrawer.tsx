@@ -11,6 +11,7 @@ import {
 import EventForm from "./EventForm";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 const CreateEventDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,12 +34,17 @@ const CreateEventDrawer = () => {
   };
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerTrigger>Open</DrawerTrigger>
+      <Link href="/events?create=true">
+      <Button className="cursor-pointer">
+        <DrawerTrigger className="cursor-pointer">Create Event</DrawerTrigger>
+      </Button>
+      </Link>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Create Your New Event</DrawerTitle>
         </DrawerHeader>
         <EventForm
+        setIsOpen={setIsOpen}
           onSubmitForm={() => {
             handleClose();
           }}
