@@ -1,12 +1,24 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { SquarePen, AlignJustify } from "lucide-react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { checkUser } from "@/actions/user";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const storeUserData = async () => {
+      try {
+        await checkUser();
+      } catch (error) {
+        console.log(`Error in storing data: ${error}`);
+      }
+    };
+    storeUserData();
+  });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -16,11 +28,11 @@ const Header: React.FC = () => {
     <div className="flex flex-col sm:flex-row justify-between items-center border px-4 sm:px-6 md:px-10 border-b-2 border-gray-500 h-auto sm:h-20 py-4 sm:py-0 sticky top-0 z-10 bg-white">
       {/* Logo */}
       <div className="flex justify-between items-center w-full sm:w-auto">
-       <Link href="/">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-center sm:text-left">
-          <span className="text-blue-600">Calen</span>dra
-        </h1>
-       </Link>
+        <Link href="/">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-center sm:text-left">
+            <span className="text-blue-600">Calen</span>dra
+          </h1>
+        </Link>
         <button
           className="sm:hidden p-2 focus:outline-none"
           onClick={toggleMenu}
