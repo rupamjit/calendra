@@ -8,5 +8,12 @@ export interface User {
   events?: string[];
   bookings?: string[];
   avalaibility?: string[];
-
 }
+
+
+export interface FormData  {
+  title: string;
+  description: string;
+  duration: number;
+  isPrivate: boolean;
+};
