@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  clerkId      String        @unique
+  email        String        @unique
+  userName     String?
+  imageUrl     String?
+  events       Event[]       @relation("UserEvents")
+  bookings     Booking[]     @relation("UserBooking")
+  avalaibility Avalaibility?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Event {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  duration    Int
+  bookings    Booking[]
+  isPrivate   Boolean
+  userId      String
+  user        User      @relation("UserEvents", fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Avalaibility {
+  id     String            @id @default(uuid())
+  userId String            @unique
+  user   User              @relation(fields: [userId], references: [id])
+  days   DayAvalaibility[]
+}
+
+model Booking {
+  id             String   @id @default(uuid())
+  eventId        String
+  Event          Event    @relation(fields: [eventId], references: [id])
+  userId         String
+  user           User     @relation("UserBooking", fields: [userId], references: [id])
+  name           String
+  email          String
+  additionalInfo String?
+  startTime      DateTime
+  endTime        DateTime
+  googleEventId  String
+  meetId         String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model DayAvalaibility {
+  id             String       @id @default(uuid())
+  avalaibilityId String
+  avalaibility   Avalaibility @relation(fields: [avalaibilityId], references: [id])
+  day            DayOfWeek
+  timeGap        Int
+  startTime      DateTime
+  endTime        DateTime
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
