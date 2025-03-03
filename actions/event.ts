@@ -8,7 +8,7 @@ import { FormData } from "@/Types";
 export const createEvent = async (data: FormData) => {
   try {
     const { userId } = await auth();
-    console.log(userId);
+    // console.log(userId);
     if (!userId) {
       throw new Error("Unauthorized User");
     }
@@ -43,5 +43,41 @@ export const createEvent = async (data: FormData) => {
     return event;
   } catch (error) {
     throw new Error(`Error in creating event ${error}`);
+  }
+};
+
+export const getUserEvents = async () => {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      throw new Error(`Unauthorize User`);
+    }
+
+    const user = prisma.user.findUnique({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User Not Found");
+    }
+
+    const events = await prisma.event.findMany({
+      where: {
+        userId: user.id,
+      },
+      orderBy: { createdAt: "desc" },
+      include: {
+        _count: {
+          select: { bookings: true },
+        },
+      },
+    });
+
+    return { events, user };
+  } catch (error) {
+    throw new Error(`Error in fetching user's events ${error}`);
   }
 };
