@@ -114,6 +114,8 @@ export const deleteEvent = async (eventId: string) => {
         id: eventId,
       },
     });
+
+    return {success:true}
   } catch (error) {
     throw new Error(`Error in deleting event ${error}`);
   }
