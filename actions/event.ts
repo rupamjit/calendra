@@ -54,7 +54,7 @@ export const getUserEvents = async () => {
       throw new Error(`Unauthorize User`);
     }
 
-    const user = prisma.user.findUnique({
+    const user = await  prisma.user.findUnique({
       where: {
         clerkId: userId,
       },
@@ -64,6 +64,7 @@ export const getUserEvents = async () => {
       throw new Error("User Not Found");
     }
 
+ 
     const events = await prisma.event.findMany({
       where: {
         userId: user.id,

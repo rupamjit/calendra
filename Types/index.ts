@@ -10,10 +10,23 @@ export interface User {
   avalaibility?: string[];
 }
 
-
-export interface FormData  {
+export interface FormData {
   title: string;
   description: string;
   duration: number;
   isPrivate: boolean;
-};
+}
+
+export interface Event {
+  createdAt: string;
+  description: string;
+  id: string;
+  isPrivate: boolean;
+  duration: number;
+  title: string;
+  userId: true;
+  _count: {
+    bookings: number;
+  };
+  updatedAt: string;
+}
