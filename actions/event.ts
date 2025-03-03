@@ -54,7 +54,7 @@ export const getUserEvents = async () => {
       throw new Error(`Unauthorize User`);
     }
 
-    const user = await  prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         clerkId: userId,
       },
@@ -64,7 +64,6 @@ export const getUserEvents = async () => {
       throw new Error("User Not Found");
     }
 
- 
     const events = await prisma.event.findMany({
       where: {
         userId: user.id,
@@ -80,5 +79,42 @@ export const getUserEvents = async () => {
     return { events, user };
   } catch (error) {
     throw new Error(`Error in fetching user's events ${error}`);
+  }
+};
+
+export const deleteEvent = async (eventId: string) => {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      throw new Error("Unauthorized user");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User Not Found");
+    }
+
+    const event = await prisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+    });
+    if (!event || event.userId === user.id) {
+      throw new Error("Event not found or unauthorized");
+    }
+
+    await prisma.event.delete({
+      where: {
+        id: eventId,
+      },
+    });
+  } catch (error) {
+    throw new Error(`Error in deleting event ${error}`);
   }
 };

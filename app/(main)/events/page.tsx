@@ -16,8 +16,8 @@ const CreateEvent = () => {
         const response = await getUserEvents();
         setEvents(response.events);
         setUserName(response?.user?.userName)
-        console.log(response?.user?.userName)
-        console.log(response);
+        // console.log(response?.user?.userName)
+        // console.log(response);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
