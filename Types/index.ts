@@ -30,3 +30,25 @@ export interface Event {
   };
   updatedAt: string;
 }
+
+
+export interface AvailabilityData {
+  days?: {
+    id: string;
+    avalaibilityId: string;
+    day: DayOfWeek;
+    timeGap: number;
+    startTime: Date;
+    endTime: Date;
+  }[];
+  id?: string;
+  userId?: string;
+  monday?: { isAvailable: boolean; startTime: string; endTime: string };
+  tuesday?: { isAvailable: boolean; startTime: string; endTime: string };
+  wednesday?: { isAvailable: boolean; startTime: string; endTime: string };
+  thursday?: { isAvailable: boolean; startTime: string; endTime: string };
+  friday?: { isAvailable: boolean; startTime: string; endTime: string };
+  saturday?: { isAvailable: boolean; startTime: string; endTime: string };
+  sunday?: { isAvailable: boolean; startTime: string; endTime: string };
+  timeGap?: number;
+}

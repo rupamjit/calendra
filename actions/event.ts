@@ -105,7 +105,7 @@ export const deleteEvent = async (eventId: string) => {
         id: eventId,
       },
     });
-    if (!event || event.userId === user.id) {
+    if (!event || event.userId !== user.id) {
       throw new Error("Event not found or unauthorized");
     }
 

@@ -30,8 +30,8 @@ const CreateEventDrawer = () => {
     setIsOpen(false);
     if (searchParams.get("create") === "true") {
       router.replace(window?.location.pathname);
-      location.reload()
     }
+    router.refresh()
   };
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
